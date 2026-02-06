@@ -4,7 +4,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANIMAX PREMIUM PRO | RJ ROCKY</title>
+    <title>ANIMAX PREMIUM | RJ ROCKY</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -16,7 +16,7 @@
         :root { --bg: #060606; --primary: #e50914; --gold: #ffd700; --card: #181818; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; }
 
-        /* 1. Login Screen with Background Image */
+        /* Login Screen with Anime Background */
         #login-screen { 
             height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.alphacoders.com/132/1327173.png');
@@ -24,46 +24,51 @@
         }
         .login-card { background: rgba(0,0,0,0.7); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
 
-        /* 2. Navigation & Sidebar */
-        nav { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: #000; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
+        /* Navigation */
+        nav { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
         .logo { color: var(--primary); font-size: 26px; font-weight: 800; letter-spacing: 1px; }
-        .profile-trigger img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); cursor: pointer; transition: 0.3s; }
-        
-        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #111; z-index: 2000; transition: 0.4s; padding: 40px 20px; border-left: 2px solid var(--gold); box-sizing: border-box; text-align: center; }
-        .sidebar.active { right: 0; }
-        .sidebar img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 15px; }
+        .profile-trigger img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); padding: 2px; cursor: pointer; }
 
-        /* 3. Hero Banner */
+        /* Hero Banner */
         .hero-banner {
-            width: 90%; margin: 20px auto; height: 180px; border-radius: 15px;
+            width: 90%; margin: 20px auto; height: 200px; border-radius: 15px;
             background: linear-gradient(to right, rgba(0,0,0,0.9), transparent), url('https://images7.alphacoders.com/613/613926.jpg');
             background-size: cover; background-position: center;
             display: flex; flex-direction: column; justify-content: center; padding: 25px; box-sizing: border-box;
             border: 1px solid #333;
         }
 
-        /* 4. Search Bar */
-        .search-box { padding: 0 5% 15px; }
+        /* Search Bar */
+        .search-container { padding: 10px 5%; }
         #search-input {
             width: 100%; padding: 12px 25px; border-radius: 30px; border: 1px solid #333;
-            background: #111; color: #fff; outline: none; font-size: 14px;
+            background: #111; color: #fff; outline: none; font-size: 14px; transition: 0.3s;
         }
+        #search-input:focus { border-color: var(--primary); }
 
-        /* 5. Grid & Content */
-        .section-title { padding: 15px 5% 5px; font-size: 18px; color: var(--gold); font-weight: bold; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 15px; padding: 15px 5%; }
-        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; }
+        /* Grid System */
+        .section-title { padding: 20px 5% 5px; font-size: 18px; color: var(--gold); font-weight: 700; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 15px 5%; }
+        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; cursor: pointer; position: relative; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); }
         .card img { width: 100%; height: 210px; object-fit: cover; }
         .card h3 { padding: 10px; font-size: 12px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .p-tag { position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; padding: 2px 8px; font-size: 10px; font-weight: bold; border-radius: 4px; }
+        .p-tag { position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 4px; }
 
-        /* Buttons & Player */
-        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        /* Sidebar - Queen Dashboard */
+        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #111; z-index: 2000; transition: 0.4s; padding: 40px 20px; border-left: 2.5px solid var(--gold); box-sizing: border-box; text-align: center; }
+        .sidebar.active { right: 0; }
+        .sidebar img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 15px; }
+
+        /* Buttons */
+        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         .btn-red { background: var(--primary); color: #fff; }
-        #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .btn-gold { background: var(--gold); color: #000; }
+
+        /* Video Modal */
+        #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 4000; }
         .close-vid { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -71,8 +76,8 @@
     <div id="login-screen">
         <div class="login-card">
             <h1 style="color:var(--primary); font-size: 40px; margin:0;">ANIMAX</h1>
-            <p style="margin-bottom: 30px; opacity: 0.7;">Premium Anime for RJ ROCKY Fans</p>
-            <button class="btn btn-red" onclick="signIn()" style="width:auto; padding: 15px 40px; border-radius: 50px;">LOGIN WITH GOOGLE</button>
+            <p style="margin-bottom:30px; font-size:14px; color:#ccc;">Exclusive Anime by RJ ROCKY</p>
+            <button class="btn btn-red" onclick="signIn()" style="width:auto; padding:12px 40px; border-radius:50px;">LOGIN WITH GOOGLE</button>
         </div>
     </div>
 
@@ -84,16 +89,16 @@
 
         <div class="hero-banner">
             <h2 style="margin:0; color:var(--gold);">Solo Leveling</h2>
-            <p style="font-size: 12px; color: #ccc;">Watch the rise of the weakest hunter.</p>
-            <button class="btn btn-red" style="width:auto; padding: 8px 20px; font-size: 12px;">WATCH NOW</button>
+            <p style="font-size:12px; margin:5px 0 15px;">Weakest hunter to strongest King.</p>
+            <button class="btn btn-red" style="width:auto; padding:8px 25px; font-size:12px;">WATCH NOW</button>
         </div>
 
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search your anime..." onkeyup="searchAnime()">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search anime..." onkeyup="searchAnime()">
         </div>
 
         <div id="history-sec" style="display:none;">
-            <div class="section-title">RECENTLY WATCHED (Playlist)</div>
+            <div class="section-title">CONTINUE WATCHING</div>
             <div class="grid" id="history-grid"></div>
         </div>
 
@@ -103,17 +108,16 @@
         <div class="sidebar" id="side-menu">
             <img id="d-img" src="">
             <h3 id="u-name" style="margin:0;">User</h3>
-            <div id="u-status" style="color:var(--gold); font-size:12px; margin: 10px 0 20px;">FREE MEMBER</div>
+            <div id="u-status" style="color:var(--gold); font-size:12px; margin-bottom:20px;">FREE MEMBER</div>
             
-            <div style="background:#1a1a1a; padding:15px; border-radius:10px; border: 1px dashed var(--gold);">
-                <p style="font-size:11px; margin-bottom:10px; color:var(--gold);">REDEEM 30-DAY KEY</p>
-                <input type="text" id="key-input" placeholder="XXXX-XXXX" style="width:100%; padding:10px; background:#000; border:1px solid #333; color:#fff; text-align:center;">
-                <button class="btn" style="background:var(--gold);" onclick="redeemKey()">ACTIVATE NOW</button>
+            <div style="background:#1a1a1a; padding:15px; border-radius:12px; border:1.5px dashed var(--gold);">
+                <p style="font-size:11px; color:var(--gold); margin-bottom:10px;">REDEEM 30-DAY KEY</p>
+                <input type="text" id="key-input" placeholder="Enter Key" style="width:100%; padding:10px; background:#000; border:1px solid #333; color:#fff; text-align:center; margin-bottom:10px; border-radius:5px;">
+                <button class="btn btn-gold" onclick="redeemKey()">ACTIVATE NOW</button>
             </div>
 
-            <button class="btn btn-red" style="margin-top:25px;" onclick="contactAdmin()">BUY PREMIUM (TELEGRAM)</button>
+            <button class="btn btn-red" style="margin-top:30px;" onclick="contactAdmin()">BUY PREMIUM (TELEGRAM)</button>
             <p onclick="auth.signOut()" style="margin-top:30px; cursor:pointer; color:#444; font-size:13px;">Logout Account</p>
-            <p onclick="toggleSidebar()" style="margin-top:20px; cursor:pointer; color:#888; font-size:12px;">Close Panel</p>
         </div>
     </div>
 
@@ -138,7 +142,7 @@
 
         let currentUser = null;
         let isPremium = false;
-        let allAnimeData = [];
+        let allAnime = [];
 
         function signIn() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
 
@@ -150,6 +154,11 @@
                 document.getElementById('u-img').src = user.photoURL;
                 document.getElementById('d-img').src = user.photoURL;
                 document.getElementById('u-name').innerText = user.displayName;
+
+                // Online tracking
+                const onlineRef = db.ref('online_users/' + user.uid);
+                onlineRef.set({ name: user.displayName });
+                onlineRef.onDisconnect().remove();
 
                 checkPremium();
                 loadHistory();
@@ -172,9 +181,9 @@
 
         function loadAnime() {
             db.ref('anime').on('value', snap => {
-                allAnimeData = [];
-                snap.forEach(child => { allAnimeData.push(child.val()); });
-                displayAnime(allAnimeData);
+                allAnime = [];
+                snap.forEach(child => { allAnime.push(child.val()); });
+                displayAnime(allAnime);
             });
         }
 
@@ -194,15 +203,13 @@
 
         function searchAnime() {
             const q = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allAnimeData.filter(v => v.title.toLowerCase().includes(q));
+            const filtered = allAnime.filter(v => v.title.toLowerCase().includes(q));
             displayAnime(filtered);
         }
 
         function watch(url, title, thumb, isP) {
-            if (isP && !isPremium) return alert("Unlock Premium to watch this video!");
-            
-            // আইডি ক্লিন করে প্লেলিস্টে সেভ (Error fix)
-            const safeId = btoa(url).substring(0, 20).replace(/[^a-zA-Z0-9]/g, "");
+            if (isP && !isPremium) return alert("Unlock Premium to watch this!");
+            const safeId = btoa(url).substring(0,20).replace(/[^a-zA-Z0-9]/g, "");
             db.ref('playlists/' + currentUser.uid + '/' + safeId).set({url, title, thumbnail: thumb});
             play(url);
         }
@@ -235,14 +242,14 @@
                 if (snap.exists() && snap.val().status === 'active') {
                     db.ref('users/' + currentUser.uid).update({ premiumUntil: Date.now() + 2592000000 });
                     db.ref('premium_codes/' + key).update({ status: 'used', usedBy: currentUser.email });
-                    alert("Success! 30 Days Premium Activated.");
+                    alert("30 Days Premium Unlocked!");
                     toggleSidebar();
-                } else { alert("Invalid or Used Key!"); }
+                } else { alert("Invalid Key!"); }
             });
         }
 
         function contactAdmin() {
-            const msg = encodeURIComponent(`I want to purchase Premium Key.\nUser: ${currentUser.displayName}\nEmail: ${currentUser.email}`);
+            const msg = encodeURIComponent(`I want to buy Premium.\nName: ${currentUser.displayName}\nEmail: ${currentUser.email}`);
             window.open(`https://t.me/aminezone09?text=${msg}`, '_blank');
         }
 
@@ -251,4 +258,4 @@
     </script>
 </body>
                 </html>
-                    
+                
