@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>RJ ROCKY - Anime Hub</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+    <style>
+        :root { --bg: #0b0b0b; --card: #161616; --primary: #ff0000; --text: #ffffff; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+        
+        /* Login Screen */
+        #login-page { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://wallpaperaccess.com/full/19968.jpg'); background-size: cover; }
+        .login-btn { padding: 15px 30px; background: var(--primary); color: white; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,0,0,0.3); }
+
+        /* Main Panel */
+        #main-panel { display: none; }
+        header { padding: 15px 5%; background: var(--card); display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #222; sticky: top; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 25px 5%; }
+        .anime-card { background: var(--card); border-radius: 10px; overflow: hidden; transition: 0.3s; border: 1px solid #333; }
+        .anime-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .anime-card img { width: 100%; height: 150px; object-fit: cover; }
+        .anime-card h3 { padding: 12px; margin: 0; font-size: 16px; }
+
+        /* Video Player Overlay */
+        #player-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:1000; justify-content:center; align-items:center; }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <h1 style="font-size: 3rem; margin-bottom: 20px;">RJ ROCKY ANIME</h1>
+        <button class="login-btn" onclick="googleLogin()">SIGN IN WITH GOOGLE</button>
+    </div>
+
+    <div id="main-panel">
+        <header>
+            <h2 style="color: var(--primary);">RJ ROCKY</h2>
+            <button onclick="logout()" style="background:none; border:1px solid #555; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button>
+        </header>
+
+        <div class="grid" id="anime-container">
+            </div>
+    </div>
+
+    <div id="player-overlay">
+        <span class="close-btn" onclick="closePlayer()">&times;</span>
+        <iframe id="video-frame" width="90%" height="80%" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // আপনার Firebase Config [cite: 2026-02-06]
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
+            authDomain: "myanimeapp-8d079.firebaseapp.com",
+            databaseURL: "https://myanimeapp-8d079-default-rtdb.firebaseio.com",
+            projectId: "myanimeapp-8d079",
+            storageBucket: "myanimeapp-8d079.firebasestorage.app",
+            messagingSenderId: "37482342893",
+            appId: "1:37482342893:web:bebc7352e4bc102b725fe4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Login Logic
+        function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(err => {
+                alert("Error: " + err.message);
+            });
+        }
+
+        // Auth State
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('main-panel').style.display = 'block';
+                loadAnimeData();
+            } else {
+                document.getElementById('login-page').style.display = 'flex';
+                document.getElementById('main-panel').style.display = 'none';
+            }
+        });
+
+        // Load Data from Realtime Database
+        function loadAnimeData() {
+            const container = document.getElementById('anime-container');
+            db.ref('anime').on('value', snapshot => {
+                container.innerHTML = '';
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const anime = child.val();
+                        container.innerHTML += `
+                            <div class="anime-card" onclick="openPlayer('${anime.url}')">
+                                <img src="${anime.thumbnail}" alt="Thumbnail">
+                                <h3>${anime.title}</h3>
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = '<p>No anime added yet. Please add from Admin Panel!</p>';
+                }
+            });
+        }
+
+        // Player Controls
+        function openPlayer(url) {
+            document.getElementById('player-overlay').style.display = 'flex';
+            document.getElementById('video-frame').src = url;
+        }
+
+        function closePlayer() {
+            document.getElementById('player-overlay').style.display = 'none';
+            document.getElementById('video-frame').src = '';
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+    </script>
+</body>
+      </html>
+      
