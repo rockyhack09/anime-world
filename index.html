@@ -16,100 +16,88 @@
         :root { --bg: #060606; --primary: #e50914; --gold: #ffd700; --card: #181818; --text: #ffffff; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* Loader */
-        #loading-screen { position: fixed; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-
-        /* Navbar */
-        nav { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
-        .logo { color: var(--primary); font-size: 26px; font-weight: 800; letter-spacing: 1px; }
-
-        /* Queen Profile Trigger */
-        .profile-btn { position: relative; cursor: pointer; display: flex; align-items: center; }
-        .profile-btn img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); padding: 2px; transition: 0.3s; }
-        .profile-btn:hover img { transform: scale(1.1); }
-
-        /* Queen Dashboard Menu */
-        .queen-dashboard { 
-            position: absolute; top: 60px; right: 0; background: #1a1a1a; width: 260px; 
-            border-radius: 15px; border: 1px solid var(--gold); padding: 25px; 
-            display: none; flex-direction: column; align-items: center; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 2000;
+        /* 1. Login Screen with Anime Wallpaper */
+        #login-screen { 
+            height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.alphacoders.com/132/1327173.png');
+            background-size: cover; background-position: center; text-align: center;
         }
-        .queen-dashboard.active { display: flex; animation: slideDown 0.3s ease-out; }
-        .queen-dashboard img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 12px; }
-        .queen-dashboard h3 { margin: 5px 0; font-size: 18px; color: #fff; }
-        .queen-dashboard p { margin: 0; font-size: 12px; color: #888; margin-bottom: 15px; }
-        .membership-badge { background: var(--gold); color: #000; padding: 4px 15px; border-radius: 20px; font-size: 11px; font-weight: 800; margin-bottom: 20px; }
+        .login-card { background: rgba(0, 0, 0, 0.6); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
 
-        /* Grid System */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 25px 5%; }
-        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; cursor: pointer; transition: 0.4s; position: relative; }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(229, 9, 20, 0.2); }
-        .card img { width: 100%; height: 240px; object-fit: cover; }
-        .card .info { padding: 12px; }
-        .card h3 { margin: 0; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .prem-tag { position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; padding: 3px 10px; font-size: 10px; font-weight: 800; border-radius: 5px; }
+        /* 2. Navigation */
+        nav { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
+        .logo { color: var(--primary); font-size: 26px; font-weight: 800; }
+        .profile-trigger img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); padding: 2px; cursor: pointer; }
+
+        /* 3. Queen Dashboard (Side Menu) */
+        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #111; z-index: 2000; transition: 0.4s; padding: 40px 20px; border-left: 2px solid var(--gold); box-sizing: border-box; text-align: center; }
+        .sidebar.active { right: 0; }
+        .sidebar img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 15px; }
+        .status-badge { background: var(--gold); color: #000; padding: 4px 15px; border-radius: 20px; font-size: 11px; font-weight: 800; margin: 10px 0; display: inline-block; }
+
+        /* 4. Redeem Section */
+        .redeem-box { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-top: 20px; border: 1px dashed var(--gold); }
+        .redeem-box input { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #000; color: #fff; text-align: center; margin-bottom: 10px; box-sizing: border-box; }
+
+        /* 5. Content Grid & Playlist */
+        .section-title { padding: 20px 5% 5px; font-size: 18px; color: var(--gold); font-weight: 700; letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 15px 5%; }
+        .card { background: var(--card); border-radius: 10px; overflow: hidden; border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card h3 { padding: 10px; font-size: 12px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prem-tag { position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 4px; }
 
         /* Buttons */
-        .btn { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-primary { background: var(--primary); color: #fff; }
-        .btn-outline { background: #333; color: #fff; margin-top: 20px; }
-
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-content { background: #1a1a1a; padding: 35px; border-radius: 20px; text-align: center; width: 85%; max-width: 380px; border: 1px solid var(--gold); }
-        .modal-content input { width: 90%; padding: 14px; margin: 20px 0; border-radius: 8px; border: none; background: #333; color: #fff; text-align: center; font-size: 16px; }
+        .btn-gold { background: var(--gold); color: #000; }
 
         /* Video Player */
         #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 4000; }
-        .close-vid { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; }
+        .close-vid { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; z-index: 4001; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-        #login-screen { height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle, #222, #000); }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen"><h2>Loading ANIMAX...</h2></div>
-
     <div id="login-screen">
-        <h1 style="color:var(--primary); font-size: 50px; margin-bottom: 5px;">ANIMAX</h1>
-        <p style="color:#888; margin-bottom: 30px;">Premium Experience by RJ ROCKY</p>
-        <button class="btn btn-primary" onclick="signIn()" style="width:auto; padding: 15px 50px; border-radius: 50px;">CONTINUE WITH GOOGLE</button>
+        <div class="login-card">
+            <h1 style="color:var(--primary); font-size: 45px; margin: 0;">ANIMAX PRO</h1>
+            <p style="color:#ccc; margin-bottom: 30px;">Welcome to RJ ROCKY's Premium World</p>
+            <button class="btn btn-primary" onclick="signIn()" style="width:auto; padding: 15px 40px; border-radius: 50px;">LOGIN WITH GOOGLE</button>
+        </div>
     </div>
 
     <div id="main-app" style="display:none;">
         <nav>
             <div class="logo">ANIMAX</div>
-            <div class="profile-btn" onclick="toggleDash()">
-                <img id="u-img" src="" alt="User">
-                <div class="queen-dashboard" id="queen-dash">
-                    <img id="d-img" src="" alt="User">
-                    <h3 id="u-name">User Name</h3>
-                    <p id="u-email">user@gmail.com</p>
-                    <div class="membership-badge">PREMIUM MEMBER</div>
-                    <button class="btn btn-primary" onclick="window.open('https://t.me/aminezone09')">Renew Premium</button>
-                    <button class="btn btn-outline" onclick="signOut()">Logout Account</button>
-                </div>
-            </div>
+            <div class="profile-trigger" onclick="toggleSidebar()"><img id="u-img" src=""></div>
         </nav>
 
+        <div id="playlist-sec" style="display:none;">
+            <div class="section-title">CONTINUE WATCHING</div>
+            <div class="grid" id="playlist-grid"></div>
+        </div>
+
+        <div class="section-title">EXPLORE ALL ANIME</div>
         <div class="grid" id="anime-list"></div>
 
-        <div style="text-align: center; padding: 40px;">
-            <a href="#" id="tg-btn" style="background:#0088cc; color:white; padding:15px 30px; border-radius:50px; text-decoration:none; font-weight:800; font-size: 14px;">GET PREMIUM KEY</a>
-        </div>
-    </div>
+        <div class="sidebar" id="side-menu">
+            <img id="d-img" src="">
+            <h3 id="u-name" style="margin:0;">User</h3>
+            <p id="u-email" style="font-size: 11px; color: #666; margin-bottom: 5px;">user@gmail.com</p>
+            <div class="status-badge" id="u-status">FREE USER</div>
+            
+            <div class="redeem-box">
+                <p style="font-size: 11px; margin-bottom: 10px; color: var(--gold);">REDEEM 30-DAY ACCESS</p>
+                <input type="text" id="redeem-input" placeholder="Enter Premium Key">
+                <button class="btn btn-gold" onclick="redeemKey()">ACTIVATE NOW</button>
+            </div>
 
-    <div id="premium-modal" class="modal">
-        <div class="modal-content">
-            <h2 style="color:var(--gold); margin:0;">Unlock Content</h2>
-            <p style="color:#aaa; font-size:13px; margin-top:10px;">এটি একটি প্রিমিয়াম ভিডিও। দেখতে আপনার ৩০ দিনের কোডটি দিন।</p>
-            <input type="text" id="key-input" placeholder="Enter Redeem Code">
-            <button class="btn btn-primary" style="background:var(--gold); color:#000;" onclick="verifyKey()">ACTIVATE NOW</button>
-            <p style="margin-top:20px; color:#555; cursor:pointer; font-size:12px;" onclick="closeModal()">Maybe Later</p>
+            <button class="btn btn-primary" style="margin-top: 30px;" onclick="window.open('https://t.me/aminezone09')">BUY KEY (TELEGRAM)</button>
+            <p onclick="auth.signOut()" style="margin-top: 20px; cursor: pointer; font-size: 13px; color: #444;">Logout Account</p>
+            <p onclick="toggleSidebar()" style="margin-top: 20px; cursor: pointer; color: #888;">Close Menu</p>
         </div>
     </div>
 
@@ -119,7 +107,7 @@
     </div>
 
     <script>
-        // Firebase Config
+        // আপনার Firebase Config
         const firebaseConfig = {
           apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
           authDomain: "myanimeapp-8d079.firebaseapp.com",
@@ -129,88 +117,111 @@
           messagingSenderId: "37482342893",
           appId: "1:37482342893:web:bebc7352e4bc102b725fe4"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.database();
 
         let currentUser = null;
-        let activeUrl = "";
+        let isPremium = false;
 
-        function signIn() {
-            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        }
+        function signIn() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
 
         auth.onAuthStateChanged(user => {
-            document.getElementById('loading-screen').style.display = 'none';
             if (user) {
                 currentUser = user;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                
-                // প্রোফাইল ডাটা আপডেট
                 document.getElementById('u-img').src = user.photoURL;
                 document.getElementById('d-img').src = user.photoURL;
                 document.getElementById('u-name').innerText = user.displayName;
                 document.getElementById('u-email').innerText = user.email;
 
-                // স্মার্ট টেলিগ্রাম লিঙ্ক [cite: 2026-01-31]
-                const text = encodeURIComponent(`Hello RJ ROCKY,\nI want a 1 Month Premium Key.\nUser Email: ${user.email}`);
-                document.getElementById('tg-btn').href = `https://t.me/aminezone09?text=${text}`;
-
-                loadContent();
+                checkPremium();
+                loadPlaylist();
+                loadAllAnime();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('main-app').style.display = 'none';
             }
         });
 
-        function loadContent() {
+        // ১. প্রিমিয়াম এক্সেস চেক
+        function checkPremium() {
+            db.ref('users/' + currentUser.uid).on('value', snap => {
+                const data = snap.val();
+                if (data && data.premiumUntil > Date.now()) {
+                    isPremium = true;
+                    document.getElementById('u-status').innerText = "QUEEN PREMIUM ACTIVE";
+                    document.getElementById('u-status').style.background = "gold";
+                } else {
+                    isPremium = false;
+                    document.getElementById('u-status').innerText = "FREE USER";
+                }
+            });
+        }
+
+        // ২. কি রিডিম করা
+        function redeemKey() {
+            const key = document.getElementById('redeem-input').value.trim();
+            if(!key) return alert("Enter a key!");
+
+            db.ref('premium_codes/' + key).once('value', snap => {
+                if (snap.exists() && snap.val().status === 'active') {
+                    const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+                    db.ref('users/' + currentUser.uid).update({ premiumUntil: expiry });
+                    db.ref('premium_codes/' + key).update({ status: 'used', usedBy: currentUser.email });
+                    alert("Success! 30 Days Premium Unlocked.");
+                    toggleSidebar();
+                } else {
+                    alert("Invalid or Expired Key!");
+                }
+            });
+        }
+
+        // ৩. প্লেলিস্টে সেভ করা
+        function saveToPlaylist(v) {
+            db.ref('playlists/' + currentUser.uid + '/' + btoa(v.url)).set(v);
+        }
+
+        function loadPlaylist() {
+            db.ref('playlists/' + currentUser.uid).on('value', snap => {
+                const grid = document.getElementById('playlist-grid');
+                grid.innerHTML = "";
+                if (snap.exists()) {
+                    document.getElementById('playlist-sec').style.display = 'block';
+                    snap.forEach(child => {
+                        const v = child.val();
+                        grid.innerHTML += `<div class="card" onclick="play('${v.url}')"><img src="${v.thumbnail}"><h3>${v.title}</h3></div>`;
+                    });
+                }
+            });
+        }
+
+        function loadAllAnime() {
             db.ref('anime').on('value', snap => {
                 const list = document.getElementById('anime-list');
                 list.innerHTML = "";
                 snap.forEach(child => {
-                    const val = child.val();
-                    const isPrem = val.title.toLowerCase().includes("premium");
+                    const v = child.val();
+                    const isP = v.title.toLowerCase().includes("premium");
                     list.innerHTML += `
-                        <div class="card" onclick="openMedia('${val.url}', ${isPrem})">
-                            ${isPrem ? '<div class="prem-tag">PREMIUM</div>' : ''}
-                            <img src="${val.thumbnail}" onerror="this.src='https://via.placeholder.com/200x300?text=Poster+Missing'">
-                            <div class="info"><h3>${val.title}</h3></div>
+                        <div class="card" onclick="watch('${v.url}', '${v.title}', '${v.thumbnail}', ${isP})">
+                            ${isP ? '<div class="prem-tag">PREMIUM</div>' : ''}
+                            <img src="${v.thumbnail}">
+                            <h3>${v.title}</h3>
                         </div>`;
                 });
             });
         }
 
-        function openMedia(url, isPrem) {
-            activeUrl = url;
-            if (isPrem) {
-                document.getElementById('premium-modal').style.display = 'flex';
-            } else {
-                play(url);
+        function watch(url, title, thumb, isP) {
+            if (isP && !isPremium) {
+                alert("এটি প্রিমিয়াম ভিডিও। প্রোফাইল থেকে কি রিডিম করুন!");
+                toggleSidebar();
+                return;
             }
-        }
-
-        function verifyKey() {
-            const key = document.getElementById('key-input').value.trim();
-            if(!key) return alert("Please enter a key!");
-
-            db.ref('premium_codes/' + key).once('value', snap => {
-                if (snap.exists()) {
-                    const data = snap.val();
-                    const now = Date.now();
-
-                    if (now > data.expiryDate) return alert("এই কোডটির ১ মাসের মেয়াদ শেষ!");
-                    if (data.status === 'used' && data.usedBy !== currentUser.email) return alert("এই কোডটি ইতিমধ্যে অন্য একজন ব্যবহার করেছেন!");
-
-                    db.ref('premium_codes/' + key).update({ status: 'used', usedBy: currentUser.email });
-                    alert("Success! 30-Day Premium Active.");
-                    closeModal();
-                    play(activeUrl);
-                } else {
-                    alert("Invalid Code!");
-                }
-            });
+            saveToPlaylist({url, title, thumbnail: thumb});
+            play(url);
         }
 
         function play(url) {
@@ -218,17 +229,8 @@
             document.getElementById('vid-frame').src = url;
         }
 
-        function toggleDash() { document.getElementById('queen-dash').classList.toggle('active'); }
-        function closeModal() { document.getElementById('premium-modal').style.display = 'none'; }
+        function toggleSidebar() { document.getElementById('side-menu').classList.toggle('active'); }
         function closeVideo() { document.getElementById('player-modal').style.display = 'none'; document.getElementById('vid-frame').src = ""; }
-        function signOut() { auth.signOut(); }
-
-        // স্ক্রিনের বাইরে ক্লিক করলে ড্যাশবোর্ড বন্ধ হবে
-        window.onclick = function(e) {
-            if (!e.target.closest('.profile-btn')) {
-                document.getElementById('queen-dash').classList.remove('active');
-            }
-        }
     </script>
 </body>
 </html>
