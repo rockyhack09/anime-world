@@ -6,160 +6,139 @@
     <title>ANIMAX PREMIUM </title>
     
     <link rel="icon" type="image/png" href="https://i.ibb.co/v4m0f5h/animax-logo-2.png">
-    <link rel="apple-touch-icon" href="https://i.ibb.co/v4m0f5h/animax-logo-2.png">
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
-        :root { --bg: #0d0e10; --header: #161719; --card: #1c1d21; --main: #ffc107; --text: #ffffff; --gray: #a0a0a0; }
+        :root { --bg: #090a0c; --header: #121317; --card: #1a1b1f; --main: #ffc107; --text: #ffffff; --gray: #a0a0a0; }
         body.light-mode { --bg: #f4f6f8; --header: #ffffff; --card: #ffffff; --text: #1a1a1a; --gray: #666666; --main: #ff9800; }
 
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; transition: 0.4s ease; overflow-x: hidden; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; transition: 0.3s; }
 
-        /* --- Header --- */
-        header { background: var(--header); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .menu-icon { font-size: 24px; color: var(--main); cursor: pointer; transition: 0.3s; }
-        .menu-icon:hover { transform: scale(1.1); }
-        .search-container { background: var(--bg); padding: 8px 18px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); width: 45%; display: flex; align-items: center; }
-        .search-container input { background: none; border: none; color: var(--text); outline: none; width: 100%; margin-left: 10px; font-size: 14px; }
+        /* Header */
+        header { background: var(--header); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .search-bar { background: var(--bg); padding: 8px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 45%; display: flex; align-items: center; }
+        .search-bar input { background: none; border: none; color: var(--text); outline: none; width: 100%; margin-left: 10px; font-size: 14px; }
 
-        /* --- Full Width Auto Slider --- */
-        .slider-wrapper { width: 94%; max-width: 1500px; margin: 20px auto; height: 380px; position: relative; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1s ease-in-out; display: flex; align-items: center; padding: 0 6%; }
+        /* Dynamic Slider */
+        .slider-box { width: 94%; max-width: 1500px; margin: 20px auto; height: 420px; position: relative; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: 1s ease-in-out; display: flex; align-items: center; padding: 0 6%; cursor: pointer; }
         .slide.active { opacity: 1; z-index: 5; }
-        .slide::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.85), transparent); z-index: 1; }
-        .slide-content { position: relative; z-index: 2; transform: translateY(20px); transition: 0.8s; opacity: 0; }
+        .slide::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.9), transparent); }
+        .slide-content { position: relative; z-index: 10; transform: translateY(30px); opacity: 0; transition: 0.8s; }
         .slide.active .slide-content { transform: translateY(0); opacity: 1; }
-        .slide h1 { font-size: clamp(24px, 5vw, 42px); color: var(--main); margin: 0; font-weight: 700; }
-        .slide p { color: #ddd; max-width: 550px; font-size: clamp(12px, 2vw, 15px); margin: 15px 0 25px; line-height: 1.6; }
+        .slide h1 { font-size: clamp(28px, 5vw, 45px); color: var(--main); margin: 0; text-transform: uppercase; }
+        .slide p { color: #ddd; max-width: 500px; font-size: 14px; margin: 15px 0 25px; line-height: 1.6; }
+        .btn-watch { background: var(--main); color: #000; padding: 12px 35px; border-radius: 8px; font-weight: bold; display: inline-block; transition: 0.3s; }
+        .btn-watch:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--main); }
 
-        /* --- Sidebar --- */
-        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--card); z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px 20px; overflow-y: auto; }
+        /* Sidebar */
+        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--card); z-index: 2000; transition: 0.4s; padding: 40px 20px; box-shadow: 10px 0 40px #000; }
         .sidebar.active { left: 0; }
-        .profile-box { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 25px; }
-        .profile-box i { font-size: 60px; color: var(--main); text-shadow: 0 0 15px rgba(255,193,7,0.3); }
-        .premium-btn-box { background: rgba(255,193,7,0.05); padding: 18px; border-radius: 15px; border: 1px dashed var(--main); margin-bottom: 25px; }
-        .premium-btn-box input { width: 100%; padding: 12px; margin-top: 12px; background: #000; border: 1px solid #222; color: #fff; border-radius: 8px; text-align: center; box-sizing: border-box; }
-        
-        .nav-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; font-size: 14px; transition: 0.3s; }
-        .nav-item:hover { color: var(--main); padding-left: 8px; }
-
-        /* --- Main Responsive Layout --- */
-        .main-container { display: grid; grid-template-columns: 1fr 320px; gap: 30px; padding: 10px 4% 50px; max-width: 1650px; margin: 0 auto; }
-        
-        /* PC Mode: 5 Columns */
-        .anime-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        
-        .card { background: var(--card); border-radius: 15px; overflow: hidden; position: relative; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .card:hover { transform: translateY(-8px); border-color: var(--main); box-shadow: 0 10px 25px rgba(255,193,7,0.15); }
-        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; transition: 0.5s; }
-        .card:hover img { scale: 1.05; }
-        .p-badge { position: absolute; top: 12px; left: 12px; background: #ff3e3e; color: #fff; font-size: 10px; padding: 4px 10px; border-radius: 6px; font-weight: bold; z-index: 10; }
-        .info { padding: 12px; text-align: center; }
-        .info h4 { font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-        .views { font-size: 11px; color: var(--gray); display: block; margin-top: 6px; }
-
-        /* Trending Sidebar */
-        .trending-panel { background: var(--header); padding: 25px; border-radius: 20px; height: fit-content; position: sticky; top: 90px; border: 1px solid rgba(255,255,255,0.05); }
-        .trend-item { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; font-size: 13.5px; transition: 0.3s; }
-        .trend-item:hover { color: var(--main); }
-        .rank { font-weight: 800; color: var(--main); min-width: 25px; font-size: 16px; }
-
-        /* --- Player UI --- */
-        #player-box { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        iframe { width: 92%; max-width: 1000px; aspect-ratio: 16/9; border: 3px solid var(--main); border-radius: 15px; box-shadow: 0 0 50px rgba(255,193,7,0.2); }
-        .close-vid { margin-top: 30px; background: var(--main); color: #000; padding: 14px 50px; border-radius: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .close-vid:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--main); }
-
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 1500; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1500; backdrop-filter: blur(5px); }
         .overlay.active { display: block; }
 
-        /* --- Responsive Queries --- */
-        @media (max-width: 1250px) { .main-container { grid-template-columns: 1fr; } .trending-panel { position: static; margin-top: 20px; } }
-        
-        /* Tablet Mode */
-        @media (max-width: 1024px) { .anime-grid { grid-template-columns: repeat(3, 1fr); } }
+        /* Anime Grid */
+        .main-container { display: grid; grid-template-columns: 1fr 320px; gap: 30px; padding: 10px 4% 60px; max-width: 1650px; margin: 0 auto; }
+        .anime-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .card { background: var(--card); border-radius: 18px; overflow: hidden; position: relative; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.05); }
+        .card:hover { transform: translateY(-10px); border-color: var(--main); box-shadow: 0 10px 20px rgba(255,193,7,0.1); }
+        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+        .card-info { padding: 15px; text-align: center; }
+        .card-info h4 { font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+        .v-count { font-size: 11px; color: var(--gray); margin-top: 8px; display: block; }
+        .badge { position: absolute; top: 12px; left: 12px; background: #ff3e3e; color: #fff; font-size: 10px; padding: 4px 10px; border-radius: 6px; font-weight: bold; z-index: 10; }
 
-        /* Phone Mode: 2 Columns */
+        /* Premium Popup */
+        #premium-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; justify-content: center; align-items: center; }
+        .popup-card { background: #1a1b1f; padding: 45px; border-radius: 30px; text-align: center; border: 2px solid var(--main); box-shadow: 0 0 60px rgba(255,193,7,0.4); transform: scale(0.6); opacity: 0; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+        .popup-card i { font-size: 80px; color: var(--main); margin-bottom: 25px; filter: drop-shadow(0 0 10px var(--main)); }
+
+        /* Video Player */
+        #player-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        iframe { width: 92%; max-width: 1000px; aspect-ratio: 16/9; border: 3px solid var(--main); border-radius: 20px; box-shadow: 0 0 40px rgba(255,193,7,0.2); }
+        .close-vid { margin-top: 25px; background: var(--main); color: #000; padding: 14px 50px; border-radius: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; border: none; }
+        .close-vid:hover { transform: scale(1.1); }
+
+        /* Responsive */
+        @media (max-width: 1300px) { .main-container { grid-template-columns: 1fr; } }
+        @media (max-width: 1000px) { .anime-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) { 
             .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } 
-            .slider-wrapper { height: 250px; width: 100%; border-radius: 0; margin-top: 0; } 
-            header { padding: 10px 4%; }
-            .search-container { width: 55%; }
-            .slide { padding: 0 20px; }
+            .slider-box { height: 260px; border-radius: 0; width: 100%; margin-top: 0; } 
+            .search-bar { width: 50%; }
+            .slide h1 { font-size: 24px; }
+            .slide p { display: none; }
         }
     </style>
 </head>
 <body class="dark-mode">
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div id="premium-popup">
+        <div class="popup-card" id="popup-inner">
+            <i class="fas fa-crown"></i>
+            <h2 style="color:var(--main); margin-bottom:10px;">PREMIUM ACTIVATED!</h2>
+            <p>Welcome to the Elite Club. <br>Your premium access is now fully active.</p>
+            <button class="close-vid" onclick="location.reload()">START STREAMING</button>
+        </div>
+    </div>
 
     <div class="sidebar" id="sidebar">
-        <div class="profile-box">
-            <i class="fas fa-user-circle"></i>
-            <h3 style="margin-top:15px; font-size:18px;">GAMING Rocky</h3>
-            <p style="font-size:12px; opacity:0.6;">freefire368401@gmail.com</p>
-            <span id="stat" style="color: #ff3e3e; font-size: 11px; font-weight: bold; display:block; margin-top:8px;">[ Free User ]</span>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <i class="fas fa-user-shield" style="font-size: 60px; color: var(--main);"></i>
+            <h3 style="margin-top:15px;">GAMING Rocky</h3>
+            <span id="u-status" style="color:#ff3e3e; font-weight:bold; font-size:12px;">[ Free Member ]</span>
         </div>
         
-        <div class="premium-btn-box">
-            <p style="margin:0; font-size:12px; font-weight:bold; color:var(--main); letter-spacing:1px;">ACTIVATE PREMIUM</p>
-            <input type="text" id="k-in" placeholder="Enter License Key">
-            <button style="width:100%; padding:12px; background:var(--main); border:none; margin-top:10px; font-weight:bold; cursor:pointer; border-radius:8px;" onclick="activate()">ACTIVATE NOW</button>
+        <div style="background: rgba(255,193,7,0.05); padding: 20px; border-radius: 15px; border: 1px dashed var(--main); margin-bottom: 25px;">
+            <p style="font-size:11px; font-weight:bold; color:var(--main); text-align:center;">ACTIVATE LICENSE</p>
+            <input type="text" id="license-key" placeholder="Enter Key Here" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:10px; text-align:center; box-sizing:border-box; margin-top:10px;">
+            <button onclick="checkKey()" style="width:100%; margin-top:12px; padding:12px; background:var(--main); border:none; font-weight:bold; cursor:pointer; border-radius:10px;">SUBMIT KEY</button>
         </div>
 
-        <div class="nav-item" onclick="toggleNight()"><span><i class="fas fa-moon"></i> Night Mode</span> <i class="fas fa-adjust"></i></div>
-        <div class="nav-item" onclick="buy()"><span><i class="fab fa-telegram"></i> Purchase Key</span> <i class="fas fa-external-link-alt"></i></div>
-        <div class="nav-item" onclick="location.reload()"><span><i class="fas fa-sync-alt"></i> Refresh App</span></div>
-        <div class="nav-item" onclick="logout()" style="color:#ff3e3e; margin-top:20px; font-weight:bold; border-top:1px solid rgba(255,255,255,0.05);"><span><i class="fas fa-sign-out-alt"></i> Logout System</span></div>
+        <div onclick="toggleNight()" style="padding:15px 5px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer;"><i class="fas fa-moon"></i> Night Mode</div>
+        <div onclick="sendTelegram()" style="padding:15px 5px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer;"><i class="fab fa-telegram"></i> Buy Premium Key</div>
+        <div onclick="logoutUser()" style="padding:15px 5px; color:#ff3e3e; cursor:pointer; font-weight:bold; margin-top:20px;"><i class="fas fa-sign-out-alt"></i> Logout System</div>
     </div>
 
     <header>
-        <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-        <div class="search-container">
+        <div onclick="toggleSidebar()" style="font-size: 24px; color: var(--main); cursor: pointer;"><i class="fas fa-bars"></i></div>
+        <div class="search-bar">
             <i class="fas fa-search" style="color: #555;"></i>
-            <input type="text" id="srch" placeholder="Search your favorite anime..." onkeyup="search()">
+            <input type="text" id="search-input" placeholder="Search movies or anime..." onkeyup="filterContent()">
         </div>
-        <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-user-shield"></i></div>
+        <div onclick="toggleSidebar()" style="font-size: 24px; color: var(--main); cursor: pointer;"><i class="fas fa-user-circle"></i></div>
     </header>
 
-    <div class="slider-wrapper">
-        <div class="slide active" style="background-image: url('https://images8.alphacoders.com/632/632051.png');">
-            <div class="slide-content"><h1>Welcome to ANIMAX</h1><p>Watch High-Definition anime series and movies with zero ads. Your ultimate destination for Japanese animation.</p></div>
-        </div>
-        <div class="slide" style="background-image: url('https://images3.alphacoders.com/132/1322502.png');">
-            <div class="slide-content"><h1>Unlock Premium</h1><p>Get exclusive access to premium-only content and the latest releases before anyone else.</p></div>
-        </div>
-        <div class="slide" style="background-image: url('https://images5.alphacoders.com/133/1337446.png');">
-            <div class="slide-content"><h1>Join the Community</h1><p>Join thousands of users and track your favorite shows easily on our platform.</p></div>
-        </div>
-    </div>
+    <div class="slider-box" id="slider-engine"></div>
 
     <div class="main-container">
-        <div class="left">
-            <h2 style="font-size: 19px; margin-bottom: 25px; border-left: 5px solid var(--main); padding-left: 15px; letter-spacing: 1px;">LATEST DISCOVERIES</h2>
-            <div class="anime-grid" id="grid"></div>
+        <div class="content-left">
+            <h2 style="font-size: 20px; border-left: 5px solid var(--main); padding-left: 15px; margin-bottom:30px; letter-spacing:1px;">LATEST DISCOVERIES</h2>
+            <div class="anime-grid" id="main-grid"></div>
         </div>
         
-        <div class="right">
-            <div class="trending-panel">
-                <p style="color:var(--main); font-weight:bold; margin-bottom:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px;">Trending Top 10</p>
-                <div id="t-list"></div>
+        <div class="content-right">
+            <div style="background: var(--header); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); position: sticky; top: 90px;">
+                <p style="color:var(--main); font-weight:bold; margin-bottom:20px; text-transform:uppercase; font-size:13px;">Top Trending Now</p>
+                <div id="trend-list"></div>
             </div>
         </div>
     </div>
 
-    <div id="player-box">
-        <h2 id="v-name" style="color:var(--main); margin-bottom:20px; font-size: 19px; text-align:center;">Video Title</h2>
-        <iframe id="v-src" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="close-vid" onclick="closeV()">CLOSE PLAYER</div>
+    <div id="player-overlay">
+        <h2 id="vid-title" style="color:var(--main); margin-bottom:20px; font-size:18px; text-align:center;">Video Player</h2>
+        <iframe id="vid-src" src="" frameborder="0" allowfullscreen></iframe>
+        <button class="close-vid" onclick="closePlayer()">EXIT PLAYER</button>
     </div>
 
     <script>
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
             authDomain: "myanimeapp-8d079.firebaseapp.com",
@@ -172,70 +151,97 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let isP = localStorage.getItem('isP') === 'true';
-        if(isP) { 
-            const s = document.getElementById('stat');
-            s.innerText = "[ Premium Member ]"; s.style.color = "gold"; 
+        let isPremium = localStorage.getItem('isPremium') === 'true';
+        if(isPremium) {
+            const st = document.getElementById('u-status');
+            st.innerText = "[ Premium Member ]"; st.style.color = "gold";
         }
 
-        // --- Banner Logic ---
-        let sIdx = 0;
-        const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[sIdx].classList.remove('active');
-            sIdx = (sIdx + 1) % slides.length;
-            slides[sIdx].classList.add('active');
-        }, 6000);
-
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+        // --- Sidebar & Theme ---
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         function toggleNight() { document.body.classList.toggle('light-mode'); }
-        function buy() { window.open("https://t.me/aminezone09?text=Hello Rocky, I want a Premium Key for Animax.", "_blank"); }
-        function logout() { if(confirm("Are you sure you want to Logout?")) { localStorage.clear(); location.reload(); } }
+        function logoutUser() { if(confirm("Confirm Logout?")) { localStorage.clear(); location.reload(); } }
 
-        function activate() {
-            const k = document.getElementById('k-in').value.trim();
-            if(!k) return alert("Please enter key!");
-            db.ref('premium_codes/' + k).once('value', s => {
+        // --- Telegram Auto Message ---
+        function sendTelegram() {
+            const msg = encodeURIComponent("Hello Rocky, I am interested in buying a Premium License Key for Animax. Please guide me.");
+            window.open(`https://t.me/aminezone09?text=${msg}`, '_blank');
+        }
+
+        // --- License Key Activation ---
+        function checkKey() {
+            const key = document.getElementById('license-key').value.trim();
+            if(!key) return alert("Please enter a key!");
+            db.ref('premium_codes/' + key).once('value', s => {
                 if(s.exists() && s.val().status === 'active') {
-                    db.ref('premium_codes/' + k).update({ status: 'used' });
-                    localStorage.setItem('isP', 'true');
-                    alert("Account Upgraded to Premium!"); location.reload();
-                } else alert("Invalid or Expired Key!");
+                    db.ref('premium_codes/' + key).update({ status: 'used' });
+                    localStorage.setItem('isPremium', 'true');
+                    document.getElementById('premium-popup').style.display = 'flex';
+                    setTimeout(() => { document.getElementById('popup-inner').classList.add('show'); }, 100);
+                } else { alert("Key is invalid or already used!"); }
             });
         }
 
-        // --- Data Fetching ---
-        db.ref('anime').on('value', snap => {
-            const g = document.getElementById('grid');
-            const t = document.getElementById('t-list');
-            g.innerHTML = ""; t.innerHTML = "";
-            let data = []; snap.forEach(c => { data.push({id: c.key, ...c.val()}); });
+        // --- Dynamic Banner Engine ---
+        db.ref('banners').on('value', snap => {
+            const engine = document.getElementById('slider-engine');
+            engine.innerHTML = "";
+            let first = true;
+            snap.forEach(c => {
+                const b = c.val();
+                engine.innerHTML += `
+                <div class="slide ${first?'active':''}" style="background-image:url('${b.image}')" onclick="startPlay('${b.videoUrl}','free','banner','${b.title}')">
+                    <div class="slide-content">
+                        <h1>${b.title}</h1>
+                        <p>${b.desc || 'Premium streaming experience on Animax.'}</p>
+                        <div class="btn-watch">WATCH NOW</div>
+                    </div>
+                </div>`;
+                first = false;
+            });
+            initSlider();
+        });
 
-            data.forEach(v => {
-                g.innerHTML += `<div class="card item" data-title="${v.title.toLowerCase()}" onclick="play('${v.url}','${v.type}','${v.id}','${v.title}')">
-                    ${v.type==='premium'?'<div class="p-badge">PREMIUM</div>':''}<img src="${v.thumbnail}">
-                    <div class="info"><h4>${v.title}</h4><span class="views"><i class="fas fa-eye"></i> ${v.views || 0} Views</span></div></div>`;
+        function initSlider() {
+            let idx = 0; const slides = document.querySelectorAll('.slide');
+            if(slides.length > 1) setInterval(() => { slides[idx].classList.remove('active'); idx = (idx + 1) % slides.length; slides[idx].classList.add('active'); }, 6000);
+        }
+
+        // --- Load Main Content & Views ---
+        db.ref('anime').on('value', snap => {
+            const grid = document.getElementById('main-grid');
+            const trend = document.getElementById('trend-list');
+            grid.innerHTML = ""; trend.innerHTML = "";
+            let list = []; snap.forEach(c => { list.push({id: c.key, ...c.val()}); });
+
+            list.forEach(v => {
+                grid.innerHTML += `
+                <div class="card itm-box" data-title="${v.title.toLowerCase()}" onclick="startPlay('${v.url}','${v.type}','${v.id}','${v.title}')">
+                    ${v.type==='premium'?'<div class="badge">PREMIUM</div>':''}<img src="${v.thumbnail}">
+                    <div class="card-info"><h4>${v.title}</h4><span class="v-count"><i class="fas fa-eye"></i> ${v.views || 0} Views</span></div>
+                </div>`;
             });
 
-            data.sort((a,b) => (b.views||0)-(a.views||0)).slice(0,10).forEach((v,i) => {
-                t.innerHTML += `<div class="trend-item" onclick="play('${v.url}','${v.type}','${v.id}','${v.title}')"><span class="rank">${i+1}</span>${v.title}</div>`;
+            list.sort((a,b) => (b.views||0)-(a.views||0)).slice(0,10).forEach((v,i) => {
+                trend.innerHTML += `<div class="trend-item" style="display:flex; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.03); cursor:pointer; font-size:13px;" onclick="startPlay('${v.url}','${v.type}','${v.id}','${v.title}')"><span style="color:var(--main); font-weight:bold; width:25px;">${i+1}</span>${v.title}</div>`;
             });
         });
 
-        function play(u, ty, id, nm) {
-            if(ty==='premium' && !isP) return alert("Access Denied! This content is for Premium Members only.");
-            document.getElementById('player-box').style.display='flex';
-            document.getElementById('v-src').src = u;
-            document.getElementById('v-name').innerText = nm;
-            db.ref('anime/'+id+'/views').transaction(c => (c||0)+1);
+        // --- Play & View Logic ---
+        function startPlay(url, type, id, title) {
+            if(type==='premium' && !isPremium) return alert("This content is for Premium Members only!");
+            document.getElementById('player-overlay').style.display = 'flex';
+            document.getElementById('vid-src').src = url;
+            document.getElementById('vid-title').innerText = title;
+            if(id !== 'banner') db.ref('anime/'+id+'/views').transaction(v => (v||0)+1);
         }
 
-        function closeV() { document.getElementById('player-box').style.display='none'; document.getElementById('v-src').src=""; }
-        function search() {
-            let q = document.getElementById('srch').value.toLowerCase();
-            document.querySelectorAll('.item').forEach(i => i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none");
+        function closePlayer() { document.getElementById('player-overlay').style.display = 'none'; document.getElementById('vid-src').src = ""; }
+
+        function filterContent() {
+            let q = document.getElementById('search-input').value.toLowerCase();
+            document.querySelectorAll('.itm-box').forEach(i => i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none");
         }
     </script>
 </body>
-            </html>
-            
+</html>
