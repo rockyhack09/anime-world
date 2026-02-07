@@ -15,152 +15,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --bg: #0d0e10;
-            --header: #161719;
-            --card: #1c1d21;
-            --main: #ffc107;
-            --text: #ffffff;
-            --gray: #a0a0a0;
-        }
+        :root { --bg: #0d0e10; --header: #161719; --card: #1c1d21; --main: #ffc107; --text: #ffffff; --gray: #a0a0a0; }
+        body.light-mode { --bg: #f4f6f8; --header: #ffffff; --card: #ffffff; --text: #1a1a1a; --gray: #666666; --main: #ff9800; }
 
-        /* Light Mode Styles */
-        body.light-mode {
-            --bg: #f4f6f8;
-            --header: #ffffff;
-            --card: #ffffff;
-            --text: #1a1a1a;
-            --gray: #666666;
-            --main: #ff9800;
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; transition: 0.3s; overflow-x: hidden; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            transition: background 0.3s, color 0.3s;
-            overflow-x: hidden;
-        }
-
-        /* --- Header --- */
-        header {
-            background: var(--header);
-            padding: 12px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
+        /* --- Header (No Logo) --- */
+        header { background: var(--header); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .menu-icon { font-size: 24px; color: var(--main); cursor: pointer; }
-        
-        .search-container {
-            background: var(--bg);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            width: 40%;
-            max-width: 400px;
-        }
-        .search-container input {
-            background: none; border: none; color: var(--text);
-            outline: none; width: 100%; margin-left: 10px; font-size: 14px;
-        }
+        .search-box { background: var(--bg); padding: 8px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); width: 50%; display: flex; align-items: center; }
+        .search-box input { background: none; border: none; color: var(--text); outline: none; width: 100%; margin-left: 10px; font-size: 14px; }
 
-        /* --- Sidebar (Setting & Profile) --- */
-        .sidebar {
-            position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
-            background: var(--card); z-index: 2000; transition: 0.4s ease;
-            padding: 40px 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-        }
+        /* --- Sidebar (Profile & Settings) --- */
+        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--card); z-index: 2000; transition: 0.4s ease; padding: 40px 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.5); overflow-y: auto; }
         .sidebar.active { left: 0; }
+        .profile-section { text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .profile-section i { font-size: 55px; color: var(--main); }
         
-        .profile-section { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; }
-        .profile-section i { font-size: 60px; color: var(--main); margin-bottom: 15px; }
-        .profile-section h3 { margin: 0; font-size: 18px; }
-        .profile-section p { font-size: 12px; color: var(--gray); margin: 5px 0; }
+        /* Premium Key Input Box */
+        .premium-box { background: rgba(255,193,7,0.1); padding: 15px; border-radius: 12px; border: 1px dashed var(--main); margin-bottom: 20px; }
+        .premium-box input { width: 100%; padding: 10px; margin-top: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; text-align: center; box-sizing: border-box; }
+        .btn-activate { width: 100%; padding: 10px; background: var(--main); border: none; font-weight: bold; margin-top: 10px; border-radius: 6px; cursor: pointer; color: #000; }
 
-        .setting-list { list-style: none; padding: 0; }
-        .setting-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: 0.2s;
-        }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; }
         .setting-item:hover { color: var(--main); }
-        .setting-item i { width: 30px; }
 
-        /* --- Main Layout --- */
-        .main-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 30px;
-            padding: 30px 5%;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* --- Grid (5 Columns PC) --- */
-        .anime-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        /* --- Content Layout --- */
+        .wrapper { display: grid; grid-template-columns: 1fr 320px; gap: 30px; padding: 30px 5%; max-width: 1600px; margin: 0 auto; }
+        
+        /* 5 Column Grid for PC */
+        .anime-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        .card { background: var(--card); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05); }
         .card:hover { transform: translateY(-5px); border-color: var(--main); }
         .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
-        
-        .premium-tag { position: absolute; top: 10px; left: 10px; background: #ff3e3e; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; }
+        .p-badge { position: absolute; top: 10px; left: 10px; background: #ff3e3e; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; }
         .card-info { padding: 10px; text-align: center; }
-        .card-info h4 { font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-info span { font-size: 11px; color: var(--gray); }
+        .card-info h4 { font-size: 12px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- Sidebar Trending --- */
-        .trending-side { background: var(--header); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); height: fit-content; }
-        .trend-title { color: var(--main); font-size: 16px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; }
-        
-        .trend-item {
-            display: flex; align-items: center; gap: 12px; padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s;
-        }
-        .trend-item:hover { color: var(--main); padding-left: 5px; }
-        .trend-rank { font-size: 18px; font-weight: 800; color: #333; min-width: 25px; }
-        .trend-item:nth-child(-n+4) .trend-rank { color: var(--main); }
-        .trend-name { font-size: 13px; font-weight: 500; }
+        /* Trending Sidebar */
+        .trending-box { background: var(--header); padding: 20px; border-radius: 12px; height: fit-content; border: 1px solid rgba(255,255,255,0.05); }
+        .trend-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
+        .rank { font-weight: 800; color: #444; width: 20px; }
+        .trend-item:nth-child(-n+4) .rank { color: var(--main); }
 
-        /* --- Player Overlay --- */
-        #player-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        #player-overlay iframe { width: 90%; max-width: 900px; aspect-ratio: 16/9; border-radius: 15px; border: 2px solid var(--main); }
-        .close-btn { margin-top: 20px; background: var(--main); color: #000; padding: 12px 35px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        /* Player */
+        #player { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        iframe { width: 90%; max-width: 900px; aspect-ratio: 16/9; border: 2px solid var(--main); border-radius: 10px; }
+        .close-player { margin-top: 20px; background: var(--main); color: #000; padding: 10px 35px; border-radius: 30px; font-weight: bold; cursor: pointer; }
 
-        /* --- Overlay for Sidebar --- */
         .overlay-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 1500; }
         .overlay-bg.active { display: block; }
 
-        /* --- Mobile Responsive --- */
-        @media (max-width: 1100px) {
-            .main-wrapper { grid-template-columns: 1fr; }
-            .search-container { width: 60%; }
-        }
-        @media (max-width: 768px) {
-            .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .search-container { display: none; }
-        }
+        /* Responsive */
+        @media (max-width: 1100px) { .wrapper { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .anime-grid { grid-template-columns: repeat(2, 1fr); } .search-box { width: 60%; } }
     </style>
 </head>
 <body class="dark-mode">
@@ -170,63 +78,65 @@
     <div class="sidebar" id="sidebar">
         <div class="profile-section">
             <i class="fas fa-user-circle"></i>
-            <h3 id="prof-name">GAMING Rocky</h3>
-            <p id="prof-email">freefire368401@gmail.com</p>
-            <span id="prof-status" style="color: #ff3e3e; font-size: 11px; font-weight: bold;">[ Free User ]</span>
+            <h3 style="font-size: 16px; margin-top: 10px;">GAMING Rocky</h3>
+            <p style="font-size: 11px; color: var(--gray);">freefire368401@gmail.com</p>
+            <span id="u-status" style="color: #ff3e3e; font-size: 11px; font-weight: bold;">[ Free User ]</span>
         </div>
 
-        <div class="setting-list">
-            <div class="setting-item" onclick="toggleTheme()">
-                <span><i class="fas fa-moon"></i> Night Mode</span>
-                <i class="fas fa-toggle-on" id="theme-toggle"></i>
-            </div>
-            <div class="setting-item" onclick="location.reload()">
-                <span><i class="fas fa-sync-alt"></i> Refresh Application</span>
-            </div>
-            <div class="setting-item" onclick="window.open('https://t.me/aminezone09')">
-                <span><i class="fab fa-telegram-plane"></i> Contact Support</span>
-                <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
-            </div>
+        <div class="premium-box">
+            <p style="margin:0; font-size:12px; font-weight:bold; color:var(--main); text-align:center;">ACTIVATE PREMIUM KEY</p>
+            <input type="text" id="keyInp" placeholder="Enter Key Here">
+            <button class="btn-activate" onclick="checkKey()">ACTIVATE NOW</button>
         </div>
 
-        <div style="position: absolute; bottom: 20px; font-size: 10px; color: #555; width: 85%; text-align: center;">
-            ANIMAX PREMIUM V3.0
+        <div class="setting-item" onclick="toggleMode()">
+            <span><i class="fas fa-moon"></i> Night Mode</span>
+            <i class="fas fa-toggle-on" id="mode-icon"></i>
         </div>
+        
+        <div class="setting-item" onclick="buyPremium()">
+            <span><i class="fab fa-telegram-plane"></i> Buy Premium Key</span>
+            <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+        </div>
+
+        <div class="setting-item" onclick="location.reload()">
+            <span><i class="fas fa-sync"></i> Refresh App</span>
+        </div>
+
+        <p style="position: absolute; bottom: 20px; font-size: 10px; color: #555; text-align: center; width: 85%;">ANIMAX V5.0 - Final Edition</p>
     </div>
 
     <header>
         <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        
-        <div class="search-container">
-            <i class="fas fa-search" style="color: #555;"></i>
-            <input type="text" id="searchBar" placeholder="Search anime or movies..." onkeyup="search()">
+        <div class="search-box">
+            <i class="fas fa-search" style="color: #555; font-size: 12px;"></i>
+            <input type="text" id="searchInp" placeholder="Search your anime..." onkeyup="doSearch()">
         </div>
-
         <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-cog"></i></div>
     </header>
 
-    <div class="main-wrapper">
-        <div class="left-content">
-            <h2 style="font-size: 18px; margin-bottom: 25px; border-left: 4px solid var(--main); padding-left: 15px;">EXPLORE LATEST</h2>
-            <div class="anime-grid" id="grid">
-                </div>
+    <div class="wrapper">
+        <div class="left">
+            <h2 style="font-size: 18px; margin-bottom: 25px; border-left: 4px solid var(--main); padding-left: 15px;">EXPLORE CONTENT</h2>
+            <div class="anime-grid" id="grid"></div>
         </div>
 
-        <div class="trending-side">
-            <div class="trend-title">TRENDING TOP 10</div>
-            <div id="side-list">
-                </div>
+        <div class="right">
+            <div class="trending-box">
+                <p style="color:var(--main); font-weight:bold; margin-bottom:15px; font-size:14px;">TOP 10 TRENDING</p>
+                <div id="sideList"></div>
+            </div>
         </div>
     </div>
 
-    <div id="player-overlay">
-        <h2 id="play-name" style="color:var(--main); margin-bottom:15px; font-size: 18px;">Video Title</h2>
-        <iframe id="main-frame" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="close-btn" onclick="stopVideo()">CLOSE PLAYER</div>
+    <div id="player">
+        <h2 id="pTitle" style="color:var(--main); margin-bottom:15px; font-size: 18px;">Video</h2>
+        <iframe id="vFrame" src="" frameborder="0" allowfullscreen></iframe>
+        <div class="close-player" onclick="stopVid()">CLOSE PLAYER</div>
     </div>
 
     <script>
-        // --- Firebase Config ---
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
             authDomain: "myanimeapp-8d079.firebaseapp.com",
@@ -239,91 +149,77 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let isP = localStorage.getItem('isPremium') === 'true';
-        if(isP) {
-            document.getElementById('prof-status').innerText = "[ Premium Member ]";
-            document.getElementById('prof-status').style.color = "gold";
+        let isPremium = localStorage.getItem('isPremium') === 'true';
+        if(isPremium) {
+            document.getElementById('u-status').innerText = "[ Premium Member ]";
+            document.getElementById('u-status').style.color = "gold";
         }
 
-        // --- UI Controls ---
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
+        // --- Functions ---
+        function toggleSidebar() { 
+            document.getElementById('sidebar').classList.toggle('active'); 
+            document.getElementById('overlay').classList.toggle('active'); 
         }
 
-        function toggleTheme() {
+        function toggleMode() {
             document.body.classList.toggle('light-mode');
-            const icon = document.getElementById('theme-toggle');
-            if(document.body.classList.contains('light-mode')) {
-                icon.classList.replace('fa-toggle-on', 'fa-toggle-off');
-            } else {
-                icon.classList.replace('fa-toggle-off', 'fa-toggle-on');
-            }
+            const icon = document.getElementById('mode-icon');
+            icon.classList.toggle('fa-toggle-off');
         }
 
-        // --- Data Handling ---
+        function buyPremium() {
+            const msg = `Hello RJ ROCKY,\nI want to purchase a 30-Day Premium Key.\n\nUser: GAMING Rocky\nEmail: freefire368401@gmail.com`;
+            window.open(`https://t.me/aminezone09?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function checkKey() {
+            let key = document.getElementById('keyInp').value.trim();
+            if(!key) return alert("Enter a key first!");
+            db.ref('premium_codes/' + key).once('value', s => {
+                if(s.exists() && s.val().status === 'active') {
+                    db.ref('premium_codes/' + key).update({ status: 'used' });
+                    localStorage.setItem('isPremium', 'true');
+                    alert("Premium Activated!"); location.reload();
+                } else alert("Invalid Key!");
+            });
+        }
+
         db.ref('anime').on('value', snap => {
             const grid = document.getElementById('grid');
-            const side = document.getElementById('side-list');
+            const side = document.getElementById('sideList');
             grid.innerHTML = ""; side.innerHTML = "";
-            
-            let dataArr = [];
-            snap.forEach(c => { dataArr.push({key: c.key, ...c.val()}); });
+            let arr = []; snap.forEach(c => { arr.push({id: c.key, ...c.val()}); });
 
-            // Render Grid
-            dataArr.forEach(v => {
-                grid.innerHTML += `
-                    <div class="card anime-box" data-title="${v.title.toLowerCase()}" onclick="openVideo('${v.url}','${v.type}','${v.key}','${v.title}')">
-                        ${v.type==='premium'?'<div class="premium-tag">PREMIUM</div>':''}
-                        <img src="${v.thumbnail}">
-                        <div class="card-info">
-                            <h4>${v.title}</h4>
-                            <span>👁️ ${v.views || 0} Views</span>
-                        </div>
-                    </div>`;
+            arr.forEach(v => {
+                grid.innerHTML += `<div class="card item" data-title="${v.title.toLowerCase()}" onclick="play('${v.url}','${v.type}','${v.id}','${v.title}')">
+                    ${v.type==='premium'?'<div class="p-badge">PREMIUM</div>':''}
+                    <img src="${v.thumbnail}"><div class="card-info"><h4>${v.title}</h4><p style="font-size:10px; color:var(--gray); margin:5px 0 0;">👁️ ${v.views||0} Views</p></div></div>`;
             });
 
-            // Render Trending Top 10
-            dataArr.sort((a,b) => (b.views || 0) - (a.views || 0));
-            dataArr.slice(0, 10).forEach((v, i) => {
-                side.innerHTML += `
-                    <div class="trend-item" onclick="openVideo('${v.url}','${v.type}','${v.key}','${v.title}')">
-                        <span class="trend-rank">${i+1}</span>
-                        <span class="trend-name">${v.title}</span>
-                    </div>`;
+            arr.sort((a,b) => (b.views||0)-(a.views||0)).slice(0,10).forEach((v,i) => {
+                side.innerHTML += `<div class="trend-item" onclick="play('${v.url}','${v.type}','${v.id}','${v.title}')"><span class="rank">${i+1}</span>${v.title}</div>`;
             });
         });
 
-        function search() {
-            let q = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.anime-box').forEach(i => {
-                i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none";
-            });
-        }
-
-        function openVideo(url, type, id, title) {
-            if(type==='premium' && !isP) {
-                alert("This is a Premium content. Please activate premium key.");
-                toggleSidebar(); // ওপেন সাইডবার টু কন্টাক্ট এডমিন
-                return;
-            }
-            document.getElementById('player-overlay').style.display='flex';
-            document.getElementById('main-frame').src = url;
-            document.getElementById('play-name').innerText = title;
-
-            // View count logic
-            let viewed = JSON.parse(localStorage.getItem('view_log') || "[]");
-            if(!viewed.includes(id)) {
+        function play(url, type, id, title) {
+            if(type==='premium' && !isPremium) return alert("This is Premium content! Buy a key to watch.");
+            document.getElementById('player').style.display='flex';
+            document.getElementById('vFrame').src = url;
+            document.getElementById('pTitle').innerText = title;
+            
+            let v_log = JSON.parse(localStorage.getItem('v_log') || "[]");
+            if(!v_log.includes(id)) {
                 db.ref('anime/'+id+'/views').transaction(c => (c||0)+1);
-                viewed.push(id); localStorage.setItem('view_log', JSON.stringify(viewed));
+                v_log.push(id); localStorage.setItem('v_log', JSON.stringify(v_log));
             }
         }
 
-        function stopVideo() {
-            document.getElementById('player-overlay').style.display='none';
-            document.getElementById('main-frame').src="";
+        function stopVid() { document.getElementById('player').style.display='none'; document.getElementById('vFrame').src=""; }
+        function doSearch() {
+            let q = document.getElementById('searchInp').value.toLowerCase();
+            document.querySelectorAll('.item').forEach(i => i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none");
         }
     </script>
 </body>
-    </html>
+                                                                           </html>
     
