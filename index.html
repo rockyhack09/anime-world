@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANIMAX PREMIUM </title>
+    <title>ANIMAX | Full Access</title>
     
+    <link rel="icon" type="image/png" href="https://i.ibb.co/v4m0f5h/animax-logo-2.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/v4m0f5h/animax-logo-2.png">
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     
@@ -14,44 +17,87 @@
     <style>
         :root {
             --bg: #0d0e10;
-            --header-bg: #161719;
-            --card-bg: #1c1d21;
-            --main-yellow: #ffc107;
-            --text-white: #ffffff;
-            --text-gray: #a0a0a0;
+            --header: #161719;
+            --card: #1c1d21;
+            --main: #ffc107;
+            --text: #ffffff;
+            --gray: #a0a0a0;
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            --bg: #f4f6f8;
+            --header: #ffffff;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --gray: #666666;
+            --main: #ff9800;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg);
-            color: var(--text-white);
+            color: var(--text);
             margin: 0;
-            padding: 0;
+            transition: background 0.3s, color 0.3s;
             overflow-x: hidden;
         }
 
-        /* --- Navbar --- */
+        /* --- Header --- */
         header {
-            background: var(--header-bg);
-            padding: 15px 5%;
+            background: var(--header);
+            padding: 12px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #25262b;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 24px; color: var(--main-yellow); cursor: pointer; text-decoration: none; }
-        .logo img { height: 35px; }
         
-        nav a { color: var(--text-gray); text-decoration: none; margin: 0 15px; font-size: 14px; transition: 0.3s; }
-        nav a:hover { color: var(--main-yellow); }
+        .menu-icon { font-size: 24px; color: var(--main); cursor: pointer; }
+        
+        .search-container {
+            background: var(--bg);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 40%;
+            max-width: 400px;
+        }
+        .search-container input {
+            background: none; border: none; color: var(--text);
+            outline: none; width: 100%; margin-left: 10px; font-size: 14px;
+        }
 
-        .header-icons { display: flex; align-items: center; gap: 20px; font-size: 18px; cursor: pointer; }
+        /* --- Sidebar (Setting & Profile) --- */
+        .sidebar {
+            position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
+            background: var(--card); z-index: 2000; transition: 0.4s ease;
+            padding: 40px 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        }
+        .sidebar.active { left: 0; }
+        
+        .profile-section { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; }
+        .profile-section i { font-size: 60px; color: var(--main); margin-bottom: 15px; }
+        .profile-section h3 { margin: 0; font-size: 18px; }
+        .profile-section p { font-size: 12px; color: var(--gray); margin: 5px 0; }
+
+        .setting-list { list-style: none; padding: 0; }
+        .setting-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: 0.2s;
+        }
+        .setting-item:hover { color: var(--main); }
+        .setting-item i { width: 30px; }
 
         /* --- Main Layout --- */
-        .wrapper {
+        .main-wrapper {
             display: grid;
             grid-template-columns: 1fr 320px;
             gap: 30px;
@@ -60,266 +106,224 @@
             margin: 0 auto;
         }
 
-        /* --- Search Bar --- */
-        .search-container {
-            background: #1c1d21;
-            padding: 12px 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            border: 1px solid #2d2e33;
-        }
-        .search-container input {
-            background: none;
-            border: none;
-            color: #fff;
-            width: 100%;
-            outline: none;
-            font-size: 15px;
-        }
-        .search-container i { color: var(--text-gray); }
-
-        .section-label {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--main-yellow);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* --- 5 Column Grid for PC --- */
+        /* --- Grid (5 Columns PC) --- */
         .anime-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
+            gap: 15px;
         }
 
-        .anime-card {
-            background: var(--card-bg);
+        .card {
+            background: var(--card);
             border-radius: 12px;
             overflow: hidden;
             position: relative;
             cursor: pointer;
-            transition: 0.4s;
-            border: 1px solid #2d2e33;
-        }
-        .anime-card:hover { transform: translateY(-8px); border-color: var(--main-yellow); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .anime-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
-        
-        .p-badge { position: absolute; top: 12px; left: 12px; background: #ff3e3e; color: #fff; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .card-meta { padding: 12px; text-align: center; }
-        .card-meta h3 { font-size: 14px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-meta p { font-size: 11px; color: var(--text-gray); margin: 6px 0 0; }
-
-        /* --- Sidebar (Trending List) --- */
-        .sidebar { background: #161719; border-radius: 12px; padding: 25px; border: 1px solid #25262b; height: fit-content; }
-        .side-title { color: var(--main-yellow); font-size: 17px; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid #25262b; padding-bottom: 10px; }
-        
-        .trend-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-            cursor: pointer;
             transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .trend-row:hover { padding-left: 8px; color: var(--main-yellow); }
-        .rank { font-size: 20px; font-weight: 800; color: #2d2e33; width: 30px; text-align: center; }
-        .trend-row:nth-child(-n+4) .rank { color: var(--main-yellow); }
-        .trend-title { font-size: 14px; font-weight: 500; color: #e0e0e0; }
+        .card:hover { transform: translateY(-5px); border-color: var(--main); }
+        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+        
+        .premium-tag { position: absolute; top: 10px; left: 10px; background: #ff3e3e; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; }
+        .card-info { padding: 10px; text-align: center; }
+        .card-info h4 { font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-info span { font-size: 11px; color: var(--gray); }
+
+        /* --- Sidebar Trending --- */
+        .trending-side { background: var(--header); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); height: fit-content; }
+        .trend-title { color: var(--main); font-size: 16px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; }
+        
+        .trend-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s;
+        }
+        .trend-item:hover { color: var(--main); padding-left: 5px; }
+        .trend-rank { font-size: 18px; font-weight: 800; color: #333; min-width: 25px; }
+        .trend-item:nth-child(-n+4) .trend-rank { color: var(--main); }
+        .trend-name { font-size: 13px; font-weight: 500; }
 
         /* --- Player Overlay --- */
-        #player-box { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        #player-box iframe { width: 90%; max-width: 950px; aspect-ratio: 16/9; border-radius: 15px; border: 3px solid var(--main-yellow); background: #000; }
-        .close-player { margin-top: 25px; background: var(--main-yellow); color: #000; padding: 12px 40px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .close-player:hover { transform: scale(1.1); }
+        #player-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        #player-overlay iframe { width: 90%; max-width: 900px; aspect-ratio: 16/9; border-radius: 15px; border: 2px solid var(--main); }
+        .close-btn { margin-top: 20px; background: var(--main); color: #000; padding: 12px 35px; border-radius: 30px; font-weight: bold; cursor: pointer; }
 
-        /* --- Premium Modal --- */
-        #modal-p { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; }
-        .modal-body { background: #1c1d21; padding: 45px; border-radius: 20px; text-align: center; border: 1px solid var(--main-yellow); width: 350px; }
-        .modal-body input { width: 100%; padding: 14px; margin: 25px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 8px; text-align: center; box-sizing: border-box; font-size: 16px; }
-        .btn { width: 100%; padding: 14px; border: none; font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 15px; }
-        .btn-activate { background: var(--main-yellow); color: #000; margin-bottom: 12px; }
-        .btn-buy { background: #0088cc; color: #fff; }
+        /* --- Overlay for Sidebar --- */
+        .overlay-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 1500; }
+        .overlay-bg.active { display: block; }
 
-        /* --- Responsive Design --- */
+        /* --- Mobile Responsive --- */
         @media (max-width: 1100px) {
-            .wrapper { grid-template-columns: 1fr; }
-            nav { display: none; }
+            .main-wrapper { grid-template-columns: 1fr; }
+            .search-container { width: 60%; }
         }
         @media (max-width: 768px) {
-            .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .wrapper { padding: 15px; }
-            .logo { font-size: 20px; }
+            .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .search-container { display: none; }
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
 
-<header>
-    <a href="#" class="logo">
-        <img src="https://i.ibb.co/v4m0f5h/animax-logo-2.png" alt="Logo"> ANIMAX
-    </a>
-    <nav>
-        <a href="#">HOME</a>
-        <a href="#">ANIME LIST</a>
-        <a href="#">MOVIES</a>
-        <a href="#">GENRES</a>
-    </nav>
-    <div class="header-icons">
-        <i class="fas fa-crown" style="color: var(--main-yellow);" onclick="showP()"></i>
-        <i class="fas fa-bars"></i>
+    <div class="overlay-bg" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="profile-section">
+            <i class="fas fa-user-circle"></i>
+            <h3 id="prof-name">GAMING Rocky</h3>
+            <p id="prof-email">freefire368401@gmail.com</p>
+            <span id="prof-status" style="color: #ff3e3e; font-size: 11px; font-weight: bold;">[ Free User ]</span>
+        </div>
+
+        <div class="setting-list">
+            <div class="setting-item" onclick="toggleTheme()">
+                <span><i class="fas fa-moon"></i> Night Mode</span>
+                <i class="fas fa-toggle-on" id="theme-toggle"></i>
+            </div>
+            <div class="setting-item" onclick="location.reload()">
+                <span><i class="fas fa-sync-alt"></i> Refresh Application</span>
+            </div>
+            <div class="setting-item" onclick="window.open('https://t.me/aminezone09')">
+                <span><i class="fab fa-telegram-plane"></i> Contact Support</span>
+                <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+            </div>
+        </div>
+
+        <div style="position: absolute; bottom: 20px; font-size: 10px; color: #555; width: 85%; text-align: center;">
+            ANIMAX PREMIUM V3.0
+        </div>
     </div>
-</header>
 
-<div class="wrapper">
-    <div class="main-content">
+    <header>
+        <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        
         <div class="search-container">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInp" placeholder="Search for your favorite anime..." onkeyup="doSearch()">
+            <i class="fas fa-search" style="color: #555;"></i>
+            <input type="text" id="searchBar" placeholder="Search anime or movies..." onkeyup="search()">
         </div>
 
-        <div class="section-label">
-            <i class="fas fa-bolt"></i> RECENT RELEASES
+        <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-cog"></i></div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="left-content">
+            <h2 style="font-size: 18px; margin-bottom: 25px; border-left: 4px solid var(--main); padding-left: 15px;">EXPLORE LATEST</h2>
+            <div class="anime-grid" id="grid">
+                </div>
         </div>
-        
-        <div class="anime-grid" id="grid">
-            </div>
+
+        <div class="trending-side">
+            <div class="trend-title">TRENDING TOP 10</div>
+            <div id="side-list">
+                </div>
+        </div>
     </div>
 
-    <div class="sidebar">
-        <div class="side-title">TOP 10 TRENDING</div>
-        <div id="side-list">
-            </div>
+    <div id="player-overlay">
+        <h2 id="play-name" style="color:var(--main); margin-bottom:15px; font-size: 18px;">Video Title</h2>
+        <iframe id="main-frame" src="" frameborder="0" allowfullscreen></iframe>
+        <div class="close-btn" onclick="stopVideo()">CLOSE PLAYER</div>
     </div>
-</div>
 
-<div id="player-box">
-    <h2 id="vid-name" style="color:var(--main-yellow); margin-bottom:20px;">Video Title</h2>
-    <iframe id="iframe-p" src="" frameborder="0" allowfullscreen></iframe>
-    <div class="close-player" onclick="exitPlayer()">BACK TO HOME</div>
-</div>
+    <script>
+        // --- Firebase Config ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
+            authDomain: "myanimeapp-8d079.firebaseapp.com",
+            databaseURL: "https://myanimeapp-8d079-default-rtdb.firebaseio.com",
+            projectId: "myanimeapp-8d079",
+            storageBucket: "myanimeapp-8d079.firebasestorage.app",
+            messagingSenderId: "37482342893",
+            appId: "1:37482342893:web:bebc7352e4bc102b725fe4"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-<div id="modal-p">
-    <div class="modal-body">
-        <h2 style="color:var(--main-yellow); margin:0;">GET PREMIUM</h2>
-        <p style="color:var(--text-gray); font-size: 13px; margin-top:10px;">Unlock all exclusive anime content</p>
-        <input type="text" id="key-field" placeholder="ANIMAX-XXXXXX">
-        <button class="btn btn-activate" onclick="doActivate()">ACTIVATE KEY</button>
-        <button class="btn btn-buy" onclick="goTelegram()">PURCHASE VIA TELEGRAM</button>
-        <p onclick="hideP()" style="margin-top:25px; font-size:12px; color:#555; cursor:pointer;">Close</p>
-    </div>
-</div>
-
-<script>
-    // --- Firebase Configuration ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyBcWE5TCxamMSnJxqSm5X4mgSwSccIXcBI",
-        authDomain: "myanimeapp-8d079.firebaseapp.com",
-        databaseURL: "https://myanimeapp-8d079-default-rtdb.firebaseio.com",
-        projectId: "myanimeapp-8d079",
-        storageBucket: "myanimeapp-8d079.firebasestorage.app",
-        messagingSenderId: "37482342893",
-        appId: "1:37482342893:web:bebc7352e4bc102b725fe4"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let isPremium = localStorage.getItem('isPremium') === 'true';
-
-    // --- Fetch and Render Data ---
-    db.ref('anime').on('value', snap => {
-        const grid = document.getElementById('grid');
-        const side = document.getElementById('side-list');
-        grid.innerHTML = ""; side.innerHTML = "";
-        
-        let animeArr = [];
-        snap.forEach(c => { animeArr.push({id: c.key, ...c.val()}); });
-        
-        // Render Main Grid
-        animeArr.forEach(v => {
-            grid.innerHTML += `
-                <div class="anime-card anime-item" data-title="${v.title.toLowerCase()}" onclick="startPlay('${v.url}','${v.type}','${v.id}','${v.title}')">
-                    ${v.type==='premium'?'<div class="p-badge">PREMIUM</div>':''}
-                    <img src="${v.thumbnail}">
-                    <div class="card-meta">
-                        <h3>${v.title}</h3>
-                        <p><i class="fas fa-eye"></i> ${v.views || 0} Views</p>
-                    </div>
-                </div>`;
-        });
-
-        // Render Sidebar (Trending - Sorted by views)
-        animeArr.sort((a,b) => (b.views || 0) - (a.views || 0));
-        animeArr.slice(0, 10).forEach((v, i) => {
-            side.innerHTML += `
-                <div class="trend-row" onclick="startPlay('${v.url}','${v.type}','${v.id}','${v.title}')">
-                    <span class="rank">${i+1}</span>
-                    <span class="trend-title">${v.title}</span>
-                </div>`;
-        });
-    });
-
-    // --- Search Logic ---
-    function doSearch() {
-        let q = document.getElementById('searchInp').value.toLowerCase();
-        let items = document.querySelectorAll('.anime-item');
-        items.forEach(i => {
-            i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none";
-        });
-    }
-
-    // --- Video Player Functions ---
-    function startPlay(url, type, id, title) {
-        if(type==='premium' && !isPremium) return showP();
-        
-        document.getElementById('player-box').style.display = 'flex';
-        document.getElementById('iframe-p').src = url;
-        document.getElementById('vid-name').innerText = title;
-
-        // Unique View System
-        let viewedList = JSON.parse(localStorage.getItem('viewed_history') || "[]");
-        if(!viewedList.includes(id)) {
-            db.ref('anime/' + id + '/views').transaction(current => (current || 0) + 1);
-            viewedList.push(id);
-            localStorage.setItem('viewed_history', JSON.stringify(viewedList));
+        let isP = localStorage.getItem('isPremium') === 'true';
+        if(isP) {
+            document.getElementById('prof-status').innerText = "[ Premium Member ]";
+            document.getElementById('prof-status').style.color = "gold";
         }
-    }
 
-    function exitPlayer() {
-        document.getElementById('player-box').style.display='none';
-        document.getElementById('iframe-p').src="";
-    }
+        // --- UI Controls ---
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
 
-    // --- Premium Controls ---
-    function showP() { document.getElementById('modal-p').style.display='flex'; }
-    function hideP() { document.getElementById('modal-p').style.display='none'; }
-
-    function doActivate() {
-        let k = document.getElementById('key-field').value.trim();
-        if(!k) return alert("Enter key!");
-
-        db.ref('premium_codes/'+k).once('value', s => {
-            if(s.exists() && s.val().status==='active') {
-                db.ref('premium_codes/'+k).update({status:'used'});
-                localStorage.setItem('isPremium','true');
-                alert("Premium Activated Successfully!");
-                location.reload();
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('theme-toggle');
+            if(document.body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-toggle-on', 'fa-toggle-off');
             } else {
-                alert("Invalid or Used Key!");
+                icon.classList.replace('fa-toggle-off', 'fa-toggle-on');
             }
-        });
-    }
+        }
 
-    function goTelegram() {
-        const msg = `Hello RJ ROCKY,\nI want to buy a 30-Day Premium Key.\n\nName: GAMING Rocky\nEmail: freefire368401@gmail.com`;
-        window.open(`https://t.me/aminezone09?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-</script>
+        // --- Data Handling ---
+        db.ref('anime').on('value', snap => {
+            const grid = document.getElementById('grid');
+            const side = document.getElementById('side-list');
+            grid.innerHTML = ""; side.innerHTML = "";
+            
+            let dataArr = [];
+            snap.forEach(c => { dataArr.push({key: c.key, ...c.val()}); });
+
+            // Render Grid
+            dataArr.forEach(v => {
+                grid.innerHTML += `
+                    <div class="card anime-box" data-title="${v.title.toLowerCase()}" onclick="openVideo('${v.url}','${v.type}','${v.key}','${v.title}')">
+                        ${v.type==='premium'?'<div class="premium-tag">PREMIUM</div>':''}
+                        <img src="${v.thumbnail}">
+                        <div class="card-info">
+                            <h4>${v.title}</h4>
+                            <span>👁️ ${v.views || 0} Views</span>
+                        </div>
+                    </div>`;
+            });
+
+            // Render Trending Top 10
+            dataArr.sort((a,b) => (b.views || 0) - (a.views || 0));
+            dataArr.slice(0, 10).forEach((v, i) => {
+                side.innerHTML += `
+                    <div class="trend-item" onclick="openVideo('${v.url}','${v.type}','${v.key}','${v.title}')">
+                        <span class="trend-rank">${i+1}</span>
+                        <span class="trend-name">${v.title}</span>
+                    </div>`;
+            });
+        });
+
+        function search() {
+            let q = document.getElementById('searchBar').value.toLowerCase();
+            document.querySelectorAll('.anime-box').forEach(i => {
+                i.style.display = i.getAttribute('data-title').includes(q) ? "block" : "none";
+            });
+        }
+
+        function openVideo(url, type, id, title) {
+            if(type==='premium' && !isP) {
+                alert("This is a Premium content. Please activate premium key.");
+                toggleSidebar(); // ওপেন সাইডবার টু কন্টাক্ট এডমিন
+                return;
+            }
+            document.getElementById('player-overlay').style.display='flex';
+            document.getElementById('main-frame').src = url;
+            document.getElementById('play-name').innerText = title;
+
+            // View count logic
+            let viewed = JSON.parse(localStorage.getItem('view_log') || "[]");
+            if(!viewed.includes(id)) {
+                db.ref('anime/'+id+'/views').transaction(c => (c||0)+1);
+                viewed.push(id); localStorage.setItem('view_log', JSON.stringify(viewed));
+            }
+        }
+
+        function stopVideo() {
+            document.getElementById('player-overlay').style.display='none';
+            document.getElementById('main-frame').src="";
+        }
+    </script>
 </body>
-</html>
+    </html>
+    
